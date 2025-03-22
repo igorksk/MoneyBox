@@ -6,8 +6,8 @@
         {
             // Input initial amount, target amount, and monthly deposit
             decimal initialAmount = GetValidInput("Enter initial amount: ");
-            decimal targetAmount = GetValidInput("Enter target amount: ");
             decimal monthlyDeposit = GetValidInput("Enter monthly deposit: ");
+            decimal targetAmount = GetValidInput("Enter target amount: ");
 
             // Validate the monthly deposit
             if (monthlyDeposit <= 0)
