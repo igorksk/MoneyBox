@@ -31,6 +31,7 @@
 
             // Output the result
             Console.WriteLine($"You will need {monthsToReachGoal} months to reach the target.");
+            Console.ReadLine();
         }
 
         // Method to get valid input
