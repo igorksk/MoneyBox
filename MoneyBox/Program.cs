@@ -5,10 +5,10 @@
         static void Main()
         {
             // Input initial amount, target amount, and monthly deposit
-            decimal initialAmount = GetValidInput("Enter initial amount: ");
-            decimal monthlyDeposit = GetValidInput("Enter monthly deposit: ");
-            decimal targetAmount = GetValidInput("Enter target amount: ");
-
+            decimal initialAmount = GetValidInput("Enter initial amount (example: 1000 or 1000.50): ");
+            decimal targetAmount = GetValidInput("Enter target amount (example: 5000 or 5000.00): ");
+            decimal monthlyDeposit = GetValidInput("Enter monthly deposit (example: 250 or 250.00): ");
+            
             // Validate the monthly deposit
             if (monthlyDeposit <= 0)
             {
@@ -45,7 +45,7 @@
 
                 if (string.IsNullOrEmpty(userInput) || !decimal.TryParse(userInput, out input) || input < 0)
                 {
-                    Console.WriteLine("Invalid input. Please enter a valid positive number.");
+                    Console.WriteLine("Invalid input. Please enter a valid non-negative number (for example: 1000 or 1000.50).\nUse a dot or your locale's decimal separator as appropriate.");
                 }
                 else
                 {
