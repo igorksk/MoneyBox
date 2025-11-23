@@ -1,4 +1,6 @@
-﻿namespace MoneyBox
+﻿using System.Globalization;
+
+namespace MoneyBox
 {
     internal class Program
     {
@@ -29,8 +31,14 @@
             // Calculate the number of months required to reach the goal
             int monthsToReachGoal = (int)Math.Ceiling(remainingAmount / monthlyDeposit);
 
-            // Output the result
-            Console.WriteLine($"You will need {monthsToReachGoal} months to reach the target.");
+            // Calculate the exact month and year when the target will be reached.
+            // We take the current month and add the calculated months.
+            // If your first monthly deposit is applied immediately (today), subtract 1 when monthsToReachGoal > 0.
+            DateTime achievementDate = DateTime.Today.AddMonths(monthsToReachGoal);
+            string achievementMonth = achievementDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
+
+            // Output the result including the month and year
+            Console.WriteLine($"You will need {monthsToReachGoal} months to reach the target (by {achievementMonth}).");
             Console.ReadLine();
         }
 
