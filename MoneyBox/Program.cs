@@ -16,6 +16,12 @@ namespace MoneyBox
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 Console.WriteLine(ErrorMessage);
+                // Keep console open if run interactively so the user can read the error
+                if (!Console.IsInputRedirected)
+                {
+                    Console.WriteLine("Press any key to exit...");
+                    Console.ReadKey(true);
+                }
                 return;
             }
             int monthsToReachGoal = Months;
@@ -23,7 +29,14 @@ namespace MoneyBox
 
             // Output the result including the month and year
             Console.WriteLine($"You will need {monthsToReachGoal} months to reach the target (by {achievementMonth}).");
-            Console.ReadLine();
+
+            // If the app is run interactively (for example by double-clicking the exe), keep the console open until a key is pressed.
+            // If input is redirected (for example in automated tests or piping), don't wait.
+            if (!Console.IsInputRedirected)
+            {
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey(true);
+            }
         }
 
         // Method to get valid input
