@@ -11,31 +11,15 @@ namespace MoneyBox
             decimal targetAmount = GetValidInput("Enter target amount (example: 5000 or 5000.00): ");
             decimal monthlyDeposit = GetValidInput("Enter monthly deposit (example: 250 or 250.00): ");
             
-            // Validate the monthly deposit
-            if (monthlyDeposit <= 0)
+            // Calculate months and achievement date (CalculateGoal returns an error message when appropriate)
+            var (Months, AchievementDate, ErrorMessage) = CalculateGoal(initialAmount, monthlyDeposit, targetAmount);
+            if (!string.IsNullOrEmpty(ErrorMessage))
             {
-                Console.WriteLine("Monthly deposit must be greater than zero.");
+                Console.WriteLine(ErrorMessage);
                 return;
             }
-
-            // Calculate the remaining amount to reach the goal
-            decimal remainingAmount = targetAmount - initialAmount;
-
-            // Check if the initial amount is already greater than or equal to the goal
-            if (remainingAmount <= 0)
-            {
-                Console.WriteLine("Your initial amount is already greater than or equal to the target!");
-                return;
-            }
-
-            // Calculate the number of months required to reach the goal
-            int monthsToReachGoal = (int)Math.Ceiling(remainingAmount / monthlyDeposit);
-
-            // Calculate the exact month and year when the target will be reached.
-            // We take the current month and add the calculated months.
-            // If your first monthly deposit is applied immediately (today), subtract 1 when monthsToReachGoal > 0.
-            DateTime achievementDate = DateTime.Today.AddMonths(monthsToReachGoal);
-            string achievementMonth = achievementDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
+            int monthsToReachGoal = Months;
+            string achievementMonth = AchievementDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
 
             // Output the result including the month and year
             Console.WriteLine($"You will need {monthsToReachGoal} months to reach the target (by {achievementMonth}).");
@@ -61,6 +45,22 @@ namespace MoneyBox
                 }
             }
             return input;
+        }
+
+        // Pure, testable calculation method
+        // Returns number of months required, the achievement date (calculated from today), and an optional error message
+        internal static (int Months, DateTime AchievementDate, string ErrorMessage) CalculateGoal(decimal initialAmount, decimal monthlyDeposit, decimal targetAmount)
+        {
+            if (monthlyDeposit <= 0)
+                return (0, DateTime.MinValue, "Monthly deposit must be greater than zero.");
+
+            decimal remainingAmount = targetAmount - initialAmount;
+            if (remainingAmount <= 0)
+                return (0, DateTime.Today, "Your initial amount is already greater than or equal to the target.");
+
+            int months = (int)Math.Ceiling(remainingAmount / monthlyDeposit);
+            DateTime achievementDate = DateTime.Today.AddMonths(months);
+            return (months, achievementDate, string.Empty);
         }
     }
 }
